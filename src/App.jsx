@@ -127,29 +127,36 @@ export default function App() {
             style={{ backgroundImage: "url(bg.jpg)", backgroundColor: "#FBF0EC", backgroundSize: "100% auto" }}>
           <div className="absolute inset-0 bg-white/75" />
           <div className="relative z-10 p-6 flex-1 flex flex-col justify-center">
-            {!items ? (
-                <div className="flex items-center justify-center flex-1">
-                  <button onClick={shuffleMenu}
-                          className="flex items-center gap-3 px-8 py-4 bg-[#652810] text-white text-lg font-semibold rounded-full">
-                    <FontAwesomeIcon icon={faUtensils} />
-                    Generate Menu
-                  </button>
-                </div>
-            ) : (
-                <div className="space-y-6 flex-1 flex flex-col justify-center">
-                  {items.map((item, i) => (
-                      <div key={i} className="flex flex-col w-full">
-                        <p onClick={() => shuffleSingleItem(i)}
-                           className="flex items-center justify-center gap-3 text-2xl font-bold pt-4 pb-8 relative px-0 w-full cursor-pointer">
-                          {item}
-                        </p>
-                        {i !== items.length - 1 && (
-                            <div className="w-full border-t border-dashed border-slate-400" />
-                        )}
-                      </div>
-                  ))}
-                </div>
-            )}
+            <div
+                className="absolute inset-0 opacity-10"
+                style={{backgroundImage: "url(food.png)", backgroundSize: "270px 270px"}}></div>
+            <div className="flex flex-col justify-center z-10">
+              {!items ? (
+                  <div className="flex items-center justify-center flex-1">
+                    <button
+                        onClick={shuffleMenu}
+                        type="button"
+                        className="cursor-pointer flex items-center gap-3 px-8 py-4 bg-[#652810] text-white text-lg font-semibold rounded-full">
+                      <FontAwesomeIcon icon={faUtensils} />
+                      Generate Menu
+                    </button>
+                  </div>
+              ) : (
+                  <div className="space-y-6 flex-1 flex flex-col justify-center">
+                    {items.map((item, i) => (
+                        <div key={i} className="flex flex-col w-full">
+                          <p onClick={() => shuffleSingleItem(i)}
+                             className="flex items-center justify-center gap-3 text-2xl font-bold pt-4 pb-8 relative px-0 w-full cursor-pointer">
+                            {item}
+                          </p>
+                          {i !== items.length - 1 && (
+                              <div className="w-full border-t border-dashed border-slate-400" />
+                          )}
+                        </div>
+                    ))}
+                  </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -158,7 +165,7 @@ export default function App() {
               <button
                   onClick={shuffleMenu}
                   type="button"
-                  className="grow flex items-center justify-center gap-2 w-full py-3 px-5  bg-[#652810] text-white rounded-full">
+                  className="grow cursor-pointer flex items-center justify-center gap-2 w-full py-3 px-5  bg-[#652810] text-white rounded-full">
                 <FontAwesomeIcon icon={faRotateRight} />
                 Regenerate
               </button>
@@ -166,7 +173,7 @@ export default function App() {
               <button
                   onClick={captureAndShare}
                   type="button"
-                  className="flex items-center justify-center gap-2 py-3 px-5  bg-[#652810] text-white rounded-full">
+                  className="cursor-pointer flex items-center justify-center gap-2 py-3 px-5  bg-[#652810] text-white rounded-full">
                 <FontAwesomeIcon icon={faShare} /> Share
               </button>
             </div>
