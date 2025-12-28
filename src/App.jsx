@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShuffle, faUtensils, faRotateRight } from "@fortawesome/free-solid-svg-icons";
+import {useState} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faRotateRight, faUtensils, faShare} from "@fortawesome/free-solid-svg-icons";
+import html2canvas from 'html2canvas-pro';
 
 export default function App() {
   const [items, setItems] = useState(null);
@@ -86,19 +87,52 @@ export default function App() {
     });
   };
 
+  const captureAndShare = async () => {
+    const element = document.getElementById("menuCard");
+
+    const canvas = await html2canvas(element, {
+      scale: 2,      // better quality
+      useCORS: true
+    });
+
+    canvas.toBlob(async (blob) => {
+      if (!blob) return;
+
+      const file = new File([blob], "menu.jpg", {
+        type: "image/jpeg"
+      });
+
+      // ✅ Web Share API (mobile)
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: "Today's Menu",
+          text: "আজকের রান্না"
+        });
+      } else {
+        // fallback (desktop)
+        const url = URL.createObjectURL(blob);
+        window.open(url);
+      }
+    }, "image/jpeg", 0.95);
+  };
+
   return (
-      <div className="h-screen overflow-hidden bg-slate-100 p-5 flex flex-col"
-           style={{ fontFamily: '"Noto Sans Bengali", sans-serif' }}>
-        <div className="relative flex-1 rounded-2xl shadow-lg overflow-hidden flex flex-col justify-center bg-size-100 bg-no-repeat bg-bottom"
-             style={{ backgroundImage: "url(https://dgharami.github.io/daily-cooking-menu/bg.jpg)" }}>
+      <div
+          className="h-dvh overflow-hidden bg-slate-100 p-5 flex flex-col"
+          style={{ fontFamily: '"Noto Sans Bengali", sans-serif' }}>
+        <div
+            id="menuCard"
+            className="relative flex-1 rounded-2xl shadow-lg overflow-hidden flex flex-col justify-center bg-no-repeat bg-bottom"
+            style={{ backgroundImage: "url(bg.jpg)", backgroundColor: "#FBF0EC", backgroundSize: "100% auto" }}>
           <div className="absolute inset-0 bg-white/75" />
           <div className="relative z-10 p-6 flex-1 flex flex-col justify-center">
             {!items ? (
                 <div className="flex items-center justify-center flex-1">
                   <button onClick={shuffleMenu}
-                          className="flex items-center gap-3 px-8 py-4 bg-green-600 text-white text-lg font-semibold rounded-full">
+                          className="flex items-center gap-3 px-8 py-4 bg-[#652810] text-white text-lg font-semibold rounded-full">
                     <FontAwesomeIcon icon={faUtensils} />
-                    Shuffle Menu
+                    Generate Menu
                   </button>
                 </div>
             ) : (
@@ -106,7 +140,7 @@ export default function App() {
                   {items.map((item, i) => (
                       <div key={i} className="flex flex-col w-full">
                         <p onClick={() => shuffleSingleItem(i)}
-                           className="flex items-center justify-center gap-3 text-2xl font-bold pt-6 pb-12 px-4 w-full cursor-pointer">
+                           className="flex items-center justify-center gap-3 text-2xl font-bold pt-4 pb-8 relative px-0 w-full cursor-pointer">
                           {item}
                         </p>
                         {i !== items.length - 1 && (
@@ -120,11 +154,20 @@ export default function App() {
         </div>
 
         {items && (
-            <div className="pt-4">
-              <button onClick={shuffleMenu}
-                      className="flex items-center justify-center gap-2 w-full py-3 bg-slate-800 text-white rounded-xl">
+            <div className="pt-4 flex items-center gap-2">
+              <button
+                  onClick={shuffleMenu}
+                  type="button"
+                  className="grow flex items-center justify-center gap-2 w-full py-3 px-5  bg-[#652810] text-white rounded-full">
                 <FontAwesomeIcon icon={faRotateRight} />
-                Shuffle All
+                Regenerate
+              </button>
+
+              <button
+                  onClick={captureAndShare}
+                  type="button"
+                  className="flex items-center justify-center gap-2 py-3 px-5  bg-[#652810] text-white rounded-full">
+                <FontAwesomeIcon icon={faShare} /> Share
               </button>
             </div>
         )}
