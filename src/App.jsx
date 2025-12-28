@@ -90,7 +90,7 @@ export default function App() {
       <div className="h-screen overflow-hidden bg-slate-100 p-5 flex flex-col"
            style={{ fontFamily: '"Noto Sans Bengali", sans-serif' }}>
         <div className="relative flex-1 rounded-2xl shadow-lg overflow-hidden flex flex-col justify-center bg-size-100 bg-no-repeat bg-bottom"
-             style={{ backgroundImage: "url(/bg.jpg)" }}>
+             style={{ backgroundImage: "url(https://dgharami.github.io/daily-cooking-menu/bg.jpg)" }}>
           <div className="absolute inset-0 bg-white/75" />
           <div className="relative z-10 p-6 flex-1 flex flex-col justify-center">
             {!items ? (
@@ -106,7 +106,7 @@ export default function App() {
                   {items.map((item, i) => (
                       <div key={i} className="flex flex-col w-full">
                         <p onClick={() => shuffleSingleItem(i)}
-                           className="flex items-center justify-center gap-3 text-3xl font-bold pt-6 pb-12 px-4 w-full cursor-pointer">
+                           className="flex items-center justify-center gap-3 text-2xl font-bold pt-6 pb-12 px-4 w-full cursor-pointer">
                           {item}
                         </p>
                         {i !== items.length - 1 && (
